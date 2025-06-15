@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types';
+
 const SearchHistoryItem = (props) => {
     // console.log('asd');
     return (
@@ -11,6 +13,22 @@ const SearchHistoryItem = (props) => {
             </p>
         </section>
     );
+};
+
+
+SearchHistoryItem.propTypes = {
+    location: PropTypes.string.isRequired,
+    latitude: PropTypes.string.isRequired,
+    longitude: PropTypes.string.isRequired,
+
+};
+
+SearchHistoryItem.propTypes = {
+  eachHistory: PropTypes.shape({
+    location: PropTypes.string.isRequired,
+    latitude: PropTypes.string.isRequired,
+    longitude:PropTypes.string.isRequired,
+  }).isRequired,
 };
 
 export default SearchHistoryItem;

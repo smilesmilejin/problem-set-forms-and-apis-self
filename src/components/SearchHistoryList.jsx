@@ -1,4 +1,5 @@
 import SearchHistoryItem from "./SearchHistoryItem";
+import PropTypes from 'prop-types';
 
 const SearchHistoryList = (props) => {
     console.log('SearchHistory');
@@ -17,6 +18,16 @@ const SearchHistoryList = (props) => {
         </section>
 
     );
+};
+
+SearchHistoryList.propTypes = {
+  searchHistoryList: PropTypes.arrayOf(
+    PropTypes.shape({
+      location: PropTypes.string.isRequired,
+      latitude: PropTypes.string.isRequired,
+      longitude:PropTypes.string.isRequired,
+    })
+  ).isRequired,
 };
 
 export default SearchHistoryList;
