@@ -2,6 +2,7 @@ import './App.css';
 import SearchForm from './components/SearchForm.jsx';
 import axios from 'axios';
 import { useState } from 'react';
+import SearchHistoryList from './components/SearchHistoryList.jsx';
 
 function App() {
   const [location, setLocation] = useState('');
@@ -10,6 +11,24 @@ function App() {
   const [alertErrorMessage, setAlertErrorMessage]= useState('');
   const [errorMessage, setErrorMessage]= useState('');
   const [errorBoxStyle, setErrorBoxStyle]= useState('');
+  const [searchHistoryList, setSearchHistoryList] = useState([]);
+
+  // searchHistory:
+  // [
+  //   {
+  //     location: null,
+  //     latitude: null, 
+  //     longitude:null, 
+
+  //   }
+  // ]
+  const updateSearchHistory = (location, lat, lon) => {
+    const newHistory = {'location': location, 'latitude': lat, 'longitude': lon};
+    // Create a new copy and add the object
+    const updatedHistory = [...searchHistoryList, newHistory];
+    setSearchHistoryList(updatedHistory);
+  };
+
 
   const getLocationLonLat = (location) => {
     console.log('## in getLocationLonLat');
@@ -40,6 +59,9 @@ function App() {
       setLat(lat);
       setLon(lon);
       setErrorBoxStyle('');
+
+      updateSearchHistory(location, lat, lon); // need to pass paramter, becaseu react is async, if this func is using state, it is not updated yet
+      // console.log(searchHistoryList);
       return {lat,lon};
 
     })
@@ -59,6 +81,9 @@ function App() {
       const errorMessage = error.response.data.error;
 
       setErrorBoxStyle('error-box');
+
+      console.log('####### HistoryList',searchHistoryList);
+
       return errorMessage; // Unable to geocode
 
     });
@@ -78,6 +103,7 @@ function App() {
         <p>{alertErrorMessage}</p>
         <p>{errorMessage}</p>
       </div>
+      <SearchHistoryList searchHistoryList={searchHistoryList}/>
     </div>
   );
 }
