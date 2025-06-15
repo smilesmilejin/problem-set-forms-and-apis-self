@@ -12,7 +12,7 @@ const SearchForm = (props) => {
 
         props.onGetLocationLonLat(formLocation);
 
-        setFormLocation('');
+        // setFormLocation('');
     };
     const handleInputChange = (event) => {
         console.log('handlePlaceChange');

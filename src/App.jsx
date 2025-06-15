@@ -7,7 +7,9 @@ function App() {
   const [location, setLocation] = useState('');
   const [lon, setLon]= useState('');
   const [lat, setLat]= useState('');
-
+  const [alertErrorMessage, setAlertErrorMessage]= useState('');
+  const [errorMessage, setErrorMessage]= useState('');
+  const [errorBoxStyle, setErrorBoxStyle]= useState('');
 
   const getLocationLonLat = (location) => {
     console.log('## in getLocationLonLat');
@@ -17,7 +19,8 @@ function App() {
     const APIKey = import.meta.env.VITE_API_KEY;
     // console.log('APIKey:', APIKey);
 
-    setLocation(location);
+    setAlertErrorMessage('');
+    setErrorMessage('');
 
     let lat, lon;
     return axios.get(locationGetUrl, {
@@ -32,9 +35,11 @@ function App() {
       lon = response.data[0].lon;
 
       console.log('success in findCityLatAndLon', lat, lon);
-
+      
+      setLocation(location);
       setLat(lat);
       setLon(lon);
+      setErrorBoxStyle('');
       return {lat,lon};
 
     })
@@ -42,8 +47,18 @@ function App() {
       console.log('error in findCityLatAndLon!');
       console.log(error);        
       console.log(error.response.data); // {error: 'Unable to geocode'}
-      console.log(error.response.data.error); 
+      console.log(error.response.data.error); //Unable to geocode'
+
+      // setLocation('');
+      setAlertErrorMessage('Uh oh! Error!');
+      setErrorMessage(error.response.data.error);
+      setLocation('');
+      setLat('');
+      setLon('');
+
       const errorMessage = error.response.data.error;
+
+      setErrorBoxStyle('error-box');
       return errorMessage; // Unable to geocode
 
     });
@@ -59,6 +74,10 @@ function App() {
         <li>Latitude: {lat} </li>
         <li>Longitude: {lon}</li>
       </ul>
+      <div id="error" className={errorBoxStyle}>
+        <p>{alertErrorMessage}</p>
+        <p>{errorMessage}</p>
+      </div>
     </div>
   );
 }
